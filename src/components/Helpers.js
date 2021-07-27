@@ -6,8 +6,8 @@ export const roundOff = (value) => {
 };
 
 export const checkNegative = (value) => {
-  if (!isNaN) {
-    return Math.sign(value) === -1 ? true : false;
+  if (!isNaN(value)) {
+    return value > 1 ? false : true;
   }
   return false;
 };
