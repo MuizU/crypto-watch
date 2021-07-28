@@ -26,7 +26,7 @@ export default class Home extends Component {
       return (
         <>
           <div className="container">
-            <div className="row">
+            <div className="row pt-4 mb-5">
               {coinDetails.map((detail, i) => (
                 <CryptoCard key={i} detail={detail}></CryptoCard>
               ))}
