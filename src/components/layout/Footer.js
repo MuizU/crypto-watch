@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
-import "./Footer.css";
+// import "./Footer.css";
 
 export default class Footer extends Component {
   render() {

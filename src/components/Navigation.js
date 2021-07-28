@@ -1,18 +1,25 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, NavLink } from "react-router-dom";
 import Home from "./Home";
 import CoinPage from "./CoinPage";
+import FiatPage from "./FiatPage";
+import ExchangePage from "./ExchangePage";
 
 export default class Navigation extends Component {
   render() {
     return (
       <div>
         <div>
-          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <nav className="navbar navbar-expand-lg  navbar-dark bg-dark">
             <div className="container-fluid">
-              <a className="navbar-brand" as={Link} to="/" href="/">
+              <NavLink
+                exact
+                activeClassName="active"
+                className="navbar-brand"
+                to="/"
+              >
                 Crypto Watch
-              </a>
+              </NavLink>
               <button
                 className="navbar-toggler"
                 type="button"
@@ -30,40 +37,37 @@ export default class Navigation extends Component {
               >
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                   <li className="nav-item">
-                    <a
-                      className="nav-link active"
+                    <NavLink
+                      exact
+                      activeClassName="active"
+                      className="nav-link"
                       aria-current="page"
-                      href="/"
-                      as={Link}
                       to="/"
                     >
                       Crypto Rates
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" as={Link} href="/fiat" to="/fiat">
-                      Fiat Exchange Rates
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
+                    <NavLink
+                      exact
+                      activeClassName="active"
                       className="nav-link"
-                      as={Link}
-                      href="/exchanges"
+                      aria-current="page"
+                      to="/fiat"
+                    >
+                      Fiat Exchange Rates
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      exact
+                      activeClassName="active"
+                      className="nav-link"
+                      aria-current="page"
                       to="/exchanges"
                     >
                       Crypto Exchanges
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      as={Link}
-                      href="/markets"
-                      to="/markets"
-                    >
-                      Crypto Markets
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </div>
@@ -73,9 +77,8 @@ export default class Navigation extends Component {
         <div>
           <Switch>
             <Route exact path="/" component={Home}></Route>
-            {/* <Route exact path="/fiat" component={Fiat}></Route> */}
-            {/* <Route exact path="/exchanges" component={Exchanges}></Route> */}
-            {/* <Route exact path="/markets" component={Markets}></Route> */}
+            <Route exact path="/fiat" component={FiatPage}></Route>
+            <Route exact path="/exchanges" component={ExchangePage}></Route>
             <Route path="/coin/:id" component={CoinPage}></Route>
           </Switch>
         </div>

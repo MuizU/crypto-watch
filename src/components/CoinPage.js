@@ -44,39 +44,101 @@ export default class CoinPage extends Component {
               </figure>
             </div>
           </div>
-          <div className="row ">
-            <div className="col-4">
-              <h1 className="display-6">
-                <strong>Price:</strong>
-                <br />
-                &#36;
-                {roundOff(this.state.coinInfo.priceUsd)}
-              </h1>
+          <div className="card">
+            <div className="row ">
+              <div className="col-4">
+                <h1 className="display-6">
+                  <strong>Price:</strong>
+                  <br />
+                  &#36;
+                  {roundOff(this.state.coinInfo.priceUsd)}
+                </h1>
+              </div>
+              <div className="col-4">
+                <h1 className="display-6">
+                  <strong>Supply:</strong>
+                  <br />
+                  &#36;
+                  {roundOff(this.state.coinInfo.supply)}
+                </h1>
+              </div>
+              <div className="col-4">
+                <h1 className="display-6">
+                  <strong>Market Cap:</strong>
+                  <br />
+                  &#36;
+                  {roundOff(this.state.coinInfo.marketCapUsd)}
+                </h1>
+              </div>
             </div>
-            <div className="col-4">
-              <h1 className="display-6">
-                <strong>Supply:</strong> &#36;
-                {roundOff(this.state.coinInfo.supply)}
-              </h1>
-            </div>
-            <div className="col-4">
-              <h1 className="display-6">
-                <strong>Market Cap:</strong> &#36;
-                {roundOff(this.state.coinInfo.marketCapUsd)}
-              </h1>
+            <div className="row">
+              <div className="col-6">
+                <h1>{}</h1>
+                <h1 className="display-6">
+                  <strong>Price Change (24h):</strong>
+                  <br />
+                  {checkNegative(this.state.coinInfo.changePercent24Hr) ? (
+                    <i className="fas fa-arrow-down text-danger"></i>
+                  ) : (
+                    <i className="fas fa-arrow-up text-success"></i>
+                  )}{" "}
+                  {roundOff(this.state.coinInfo.changePercent24Hr)}
+                  &#37;
+                </h1>
+              </div>
             </div>
           </div>
+          <hr />
           <div className="row">
-            <div className="col-6">
-              <h1 className="display-6">
-                <strong>Price Change (24h):</strong>
-                <i class="fas fa-arrow-down"></i>
-                {!!checkNegative(this.state.coinInfo.changePercent24Hr) ? (
-                  <i class="fas fa-arrow-down"></i>
-                ) : (
-                  <i class="fas fa-arrow-up"></i>
-                )}
-              </h1>
+            <div className="accordian" id="coinAccordian">
+              <div className="accordian-item">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseHistory"
+                  aria-expanded="false"
+                  aria-controls="collapseHistory"
+                >
+                  <h2 className="accordian-header" id="headingOne">
+                    {this.state.coinInfo.name} Price History
+                  </h2>
+                </button>
+                <div
+                  id="collapseHistory"
+                  className="accordian-collapse collapse"
+                  arialabelledby="headingOne"
+                  data-bs-parent="#coinAccordian"
+                >
+                  <div className="accordion-body">
+                    <strong>TODO: ADD CHART</strong>
+                  </div>
+                </div>
+              </div>
+              <div className="accordian-item">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseMarkets"
+                  aria-expanded="false"
+                  aria-controls="collapseMarkets"
+                >
+                  <h2 className="accordian-header" id="headingTwo">
+                    {this.state.coinInfo.name} Markets
+                  </h2>
+                </button>
+                <div
+                  id="collapseMarkets"
+                  className="accordian-collapse collapse"
+                  arialabelledby="headingTwo"
+                  data-bs-parent="#coinAccordian"
+                >
+                  <div className="accordion-body">
+                    <strong>TODO: ADD MARKET</strong>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

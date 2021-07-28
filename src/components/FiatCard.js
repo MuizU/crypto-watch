@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { roundOff } from "./Helpers.js";
 export default class CryptoCard extends Component {
   render() {
@@ -12,18 +11,13 @@ export default class CryptoCard extends Component {
               {this.props.detail.symbol}
             </h6>
             <p className="card-text">
-              Supply: {roundOff(this.props.detail.supply)}
+              Rate: &#36;{roundOff(this.props.detail.rateUsd)}
               <br />
-              Price: &#36;{roundOff(this.props.detail.priceUsd)}
-              <br />
-              Market Cap: &#36;{roundOff(this.props.detail.marketCapUsd)}
+              {!!this.props.detail.currencySymbol &&
+                `
+                Currency Symbol: ${this.props.detail.currencySymbol}
+                `}
             </p>
-            <Link
-              to={`/coin/${this.props.detail.id}`}
-              className="btn btn-warning btn-block"
-            >
-              View {this.props.detail.name}
-            </Link>
           </div>
         </div>
       </div>
