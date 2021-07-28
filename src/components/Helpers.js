@@ -26,3 +26,12 @@ export const capitalizeEachWord = (word) =>
   word.replace(/(?:^|\s)\S/g, function (a) {
     return a.toUpperCase();
   });
+
+export const convertToDate = (unixTime, format) => {
+  // const format = "dddd, MMMM Do YYYY, h:mm:ss a";
+  const moment = require("moment");
+  if (isNaN(unixTime) || new Date().getTime() <= 0) {
+    return moment.format(format);
+  }
+  return moment(unixTime).format(format);
+};
