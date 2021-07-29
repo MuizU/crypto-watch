@@ -12,6 +12,15 @@ export default function CoinPage(props) {
   const { id } = useParams();
   const [chartData, setChartData] = useState(null);
   const [chartOptions] = useState({
+    animations: {
+      tension: {
+        duration: 1000,
+        easing: "linear",
+        from: 1,
+        to: 0,
+        loop: true,
+      },
+    },
     scales: {
       xAxes: [
         {
@@ -30,33 +39,6 @@ export default function CoinPage(props) {
   const formatDateChart = (date) => {
     return moment(date).format("MMM YYYY");
   };
-  const fetchCoinHistory = async (props) => {
-    try {
-      const resHistory = await axios.get(
-        `https://api.coincap.io/v2/assets/${id}/history?interval=d1`
-      );
-      let coinHistoricalData = resHistory.data.data.map((hist) => ({
-        ...hist,
-        dateTime: convertToDate(hist.time, "dddd, MMMM Do YYYY, h:mm:ss a"),
-      }));
-      coinHistoricalData = _.uniqBy(coinHistoricalData, (e) => {
-        return e.date;
-      });
-      const chartConfig = {
-        labels: coinHistoricalData.map((a) => formatDateChart(a.date)),
-        datasets: [
-          {
-            label: `${coinInfo["name"]} Valuation`,
-            data: coinHistoricalData.map((a) => a.priceUsd),
-            backgroundColor: "rgba(52, 152, 219, 0.75)",
-          },
-        ],
-      };
-      setChartData(chartConfig);
-    } catch (err) {
-      console.error(err);
-    }
-  };
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -71,6 +53,38 @@ export default function CoinPage(props) {
     };
     fetchAssets();
   }, [id]);
+  useEffect(() => {
+    const fetchCoinHistory = async (props) => {
+      try {
+        const resHistory = await axios.get(
+          `https://api.coincap.io/v2/assets/${id}/history?interval=d1`
+        );
+        let coinHistoricalData = resHistory.data.data.map((hist) => ({
+          ...hist,
+          dateTime: convertToDate(hist.time, "dddd, MMMM Do YYYY, h:mm:ss a"),
+        }));
+        coinHistoricalData = _.uniqBy(coinHistoricalData, (e) => {
+          return e.date;
+        });
+        if (!coinInfo || !coinInfo.name) return;
+        const chartConfig = {
+          labels: coinHistoricalData.map((a) => formatDateChart(a.date)),
+          datasets: [
+            {
+              label: `${coinInfo["name"]} Valuation`,
+              data: coinHistoricalData.map((a) => a.priceUsd),
+              fill: true,
+              backgroundColor: "rgba(52, 152, 219, 0.75)",
+            },
+          ],
+        };
+        setChartData(chartConfig);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCoinHistory();
+  }, [id, coinInfo]);
   if (!!coinInfo) {
     return (
       <div className="container">
@@ -137,34 +151,8 @@ export default function CoinPage(props) {
         </div>
         <hr />
         <div className="row">
-          <div className="accordian" id="coinAccordian">
-            <div className="accordian-item">
-              <button
-                className="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseHistory"
-                onClick={fetchCoinHistory}
-                aria-expanded="false"
-                aria-controls="collapseHistory"
-              >
-                <h2 className="accordian-header" id="headingOne">
-                  {coinInfo.name} Price History
-                </h2>
-              </button>
-              <div
-                id="collapseHistory"
-                className="accordian-collapse collapse"
-                arialabelledby="headingOne"
-                data-bs-parent="#coinAccordian"
-              >
-                <div className="accordion-body">
-                  <Line data={chartData} options={chartOptions}></Line>
-                </div>
-              </div>
-            </div>
-            <div></div>
-          </div>
+          <h3 className="display-3">{coinInfo.name} Valuation History</h3>
+          <Line data={chartData} options={chartOptions}></Line>
         </div>
       </div>
     );
