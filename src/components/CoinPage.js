@@ -28,7 +28,7 @@ export default function CoinPage(props) {
     },
   });
   const formatDateChart = (date) => {
-    return moment(date).format("DD MMM YYYY hh:mmA");
+    return moment(date).format("MMM YYYY");
   };
   const fetchCoinHistory = async (props) => {
     try {
@@ -39,11 +39,11 @@ export default function CoinPage(props) {
         ...hist,
         dateTime: convertToDate(hist.time, "dddd, MMMM Do YYYY, h:mm:ss a"),
       }));
-      // coinHistoricalData = _.uniqBy(coinHistoricalData, (e) => {
-      //   return e.date;
-      // });
+      coinHistoricalData = _.uniqBy(coinHistoricalData, (e) => {
+        return e.date;
+      });
       const chartConfig = {
-        labels: coinHistoricalData.map((a) => formatDateChart(a.datetime)),
+        labels: coinHistoricalData.map((a) => formatDateChart(a.date)),
         datasets: [
           {
             label: `${coinInfo["name"]} Valuation`,
