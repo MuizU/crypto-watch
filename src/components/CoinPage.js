@@ -2,20 +2,57 @@ import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Spinner from "./layout/Spinner";
-import { roundOff, checkNegative } from "./Helpers";
+import { roundOff, checkNegative, convertToDate } from "./Helpers";
+import _ from "lodash";
 import moment from "moment";
+import { Line } from "react-chartjs-2";
 
 export default function CoinPage(props) {
   const [coinInfo, setCoinInfo] = useState(null);
-  const [coinHistory, setCoinHistory] = useState([]);
   const { id } = useParams();
+  const [chartData, setChartData] = useState(null);
+  const [chartOptions] = useState({
+    scales: {
+      xAxes: [
+        {
+          display: false,
+        },
+      ],
+      yAxes: [
+        {
+          type: "linear",
+          display: true,
+          position: "left",
+        },
+      ],
+    },
+  });
+  const formatDateChart = (date) => {
+    return moment(date).format("DD MMM YYYY hh:mmA");
+  };
   const fetchCoinHistory = async (props) => {
     try {
       const resHistory = await axios.get(
-        `https://api.coincap.io/v2/assets/${id}/history?interval=h12`
+        `https://api.coincap.io/v2/assets/${id}/history?interval=d1`
       );
-      const coinHistoricalData = resHistory.data.data;
-      setCoinHistory(coinHistoricalData);
+      let coinHistoricalData = resHistory.data.data.map((hist) => ({
+        ...hist,
+        dateTime: convertToDate(hist.time, "dddd, MMMM Do YYYY, h:mm:ss a"),
+      }));
+      // coinHistoricalData = _.uniqBy(coinHistoricalData, (e) => {
+      //   return e.date;
+      // });
+      const chartConfig = {
+        labels: coinHistoricalData.map((a) => formatDateChart(a.datetime)),
+        datasets: [
+          {
+            label: `${coinInfo["name"]} Valuation`,
+            data: coinHistoricalData.map((a) => a.priceUsd),
+            backgroundColor: "rgba(52, 152, 219, 0.75)",
+          },
+        ],
+      };
+      setChartData(chartConfig);
     } catch (err) {
       console.error(err);
     }
@@ -106,8 +143,8 @@ export default function CoinPage(props) {
                 className="accordion-button collapsed"
                 type="button"
                 data-bs-toggle="collapse"
-                onClick={fetchCoinHistory}
                 data-bs-target="#collapseHistory"
+                onClick={fetchCoinHistory}
                 aria-expanded="false"
                 aria-controls="collapseHistory"
               >
@@ -122,34 +159,11 @@ export default function CoinPage(props) {
                 data-bs-parent="#coinAccordian"
               >
                 <div className="accordion-body">
-                  <strong>TODO: ADD CHART</strong>
+                  <Line data={chartData} options={chartOptions}></Line>
                 </div>
               </div>
             </div>
-            <div className="accordian-item">
-              <button
-                className="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseMarkets"
-                aria-expanded="false"
-                aria-controls="collapseMarkets"
-              >
-                <h2 className="accordian-header" id="headingTwo">
-                  {coinInfo.name} Markets
-                </h2>
-              </button>
-              <div
-                id="collapseMarkets"
-                className="accordian-collapse collapse"
-                arialabelledby="headingTwo"
-                data-bs-parent="#coinAccordian"
-              >
-                <div className="accordion-body">
-                  <strong>TODO: ADD MARKET</strong>
-                </div>
-              </div>
-            </div>
+            <div></div>
           </div>
         </div>
       </div>
