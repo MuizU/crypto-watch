@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, lazy } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
-import Home from "./Home";
-import CoinPage from "./CoinPage";
-import FiatPage from "./FiatPage";
-import ExchangePage from "./ExchangePage";
+
+const Home = lazy(() => import("./Home"));
+const CoinPage = lazy(() => import("./CoinPage"));
+const FiatPage = lazy(() => import("./FiatPage"));
+const ExchangePage = lazy(() => import("./ExchangePage"));
 
 export default class Navigation extends Component {
   render() {
