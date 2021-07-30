@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import ExchangeCard from "./ExchangeCard";
+import DisplayCard from "./DisplayCard";
 import axios from "axios";
 import Spinner from "./layout/Spinner";
+import { roundOff, numberWithCommas, removeTrailingZeros } from "./Helpers.js";
+
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +30,40 @@ export default class Home extends Component {
         <div className="container">
           <div className="row pt-4 mb-5">
             {exchangeDetails.map((detail, i) => (
-              <ExchangeCard key={i} detail={detail}></ExchangeCard>
+              <DisplayCard
+                key={i}
+                detail={detail}
+                cardText={
+                  <span>
+                    Volume:&#160;
+                    <strong>
+                      &#36;{numberWithCommas(roundOff(detail.volumeUsd))}
+                    </strong>
+                    <br />
+                    Total Volume &#37;:&#160;
+                    <strong>
+                      {removeTrailingZeros(
+                        roundOff(detail.percentTotalVolume),
+                        detail.name
+                      )}
+                      &#37;
+                    </strong>
+                    <br />
+                    Trading Pairs: <strong>{detail.tradingPairs}</strong>
+                  </span>
+                }
+                btn={
+                  <a
+                    href={detail.exchangeUrl}
+                    target="_blank"
+                    className="btn btn-warning btn-block"
+                    rel="noreferrer"
+                  >
+                    Visit {detail.name}
+                  </a>
+                }
+              />
+              // <ExchangeCard key={i} detail={detail}></ExchangeCard>
             ))}
           </div>
         </div>
