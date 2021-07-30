@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import FiatCard from "./FiatCard";
+import DisplayCard from "./DisplayCard";
 import axios from "axios";
 import Spinner from "./layout/Spinner";
-import { getCurrencyNameFromId } from "./Helpers";
+import { getCurrencyNameFromId, roundOff } from "./Helpers";
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +31,21 @@ export default class Home extends Component {
         <div className="container">
           <div className="row pt-4 mb-5">
             {fiatDetails.map((detail, i) => (
-              <FiatCard key={i} detail={detail}></FiatCard>
+              //<FiatCard key={i} detail={detail}></FiatCard>
+              <DisplayCard
+                detail={detail}
+                key={i}
+                cardText={
+                  <span>
+                    Rate: &#36;{roundOff(detail.rateUsd)}
+                    <br />
+                    {!!detail.currencySymbol &&
+                      `
+                Currency Symbol: ${detail.currencySymbol}
+                `}
+                  </span>
+                }
+              />
             ))}
           </div>
         </div>
