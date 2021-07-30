@@ -35,3 +35,17 @@ export const convertToDate = (unixTime, format) => {
   }
   return moment(unixTime).format(format);
 };
+
+export const numberWithCommas = (num) => {
+  if (!isNaN(num) && !!num && !!num.toString()) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return 0;
+};
+
+export const removeTrailingZeros = (num, val) => {
+  if (!isNaN(num) && !!num && !!num.toString()) {
+    return Number(Number(num).toFixed(4));
+  }
+  return 0;
+};
