@@ -12,7 +12,7 @@ used in this web app.
 - [X]  JSX
 - [X]  Rendering Elements
 - [X]  State and Life Cycle
-    - [x]  Mounting Methods
+    - [X]  Mounting Methods
     - [ ]  Updating Methods
     - [ ]  Unmounting Methods
     - [ ]  Error Handling Methods
