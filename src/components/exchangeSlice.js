@@ -20,7 +20,7 @@ const exchangeSlice = createSlice({
     },
     [fetchExchanges.fulfilled]: (state, action) => {
       state.exchangeStatus = LoadingState.success
-      state.exchanges = action.payload.data
+      state.exchanges = action.payload?.data
     }
   }
 })

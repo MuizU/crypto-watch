@@ -24,7 +24,7 @@ const homeSlice = createSlice({
     },
     [fetchAsset.fulfilled]: (state, action) => {
       state.status = LoadingState.success
-      state.coinDetails = action.payload.data
+      state.coinDetails = action.payload?.data
     },
     [fetchAsset.rejected]: state => {
       state.status = LoadingState.failed

@@ -25,7 +25,7 @@ const fiatSlice = createSlice({
     },
     [fetchRates.fulfilled]: (state, action) => {
       state.status = LoadingState.success
-      const fiatDetails = action.payload.data
+      const fiatDetails = action.payload?.data
         .filter((curr) => curr.type === "fiat")
         .map((curr) => ({...curr, name: getCurrencyNameFromId(curr.id)}));
       state.rates = fiatDetails
