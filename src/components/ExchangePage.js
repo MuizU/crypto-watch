@@ -3,7 +3,7 @@ import DisplayCard from "./DisplayCard";
 import Spinner from "../layout/Spinner";
 import {roundOff, numberWithCommas, removeTrailingZeros} from "../helpers.js";
 import {fetchExchanges} from './exchangeSlice'
-import {useDispatch, useSelector} from '@reduxjs/toolkit'
+import {useDispatch, useSelector} from 'react-redux'
 import {LoadingState} from '../constants'
 
 const Home = () => {

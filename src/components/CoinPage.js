@@ -1,15 +1,15 @@
-import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import {useParams} from "react-router-dom";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Spinner from "../layout/Spinner";
-import { roundOff, checkNegative, convertToDate } from "./Helpers";
+import {roundOff, checkNegative, convertToDate} from "../helpers";
 import _ from "lodash";
 import moment from "moment";
-import { Line } from "react-chartjs-2";
+import {Line} from "react-chartjs-2";
 
 export default function CoinPage() {
   const [coinInfo, setCoinInfo] = useState(null);
-  const { id } = useParams();
+  const {id} = useParams();
   const [chartData, setChartData] = useState(null);
   const [chartOptions] = useState({
     animations: {

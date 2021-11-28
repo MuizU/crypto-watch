@@ -1,10 +1,10 @@
 import React, {Component, lazy} from "react";
 import {Switch, Route, NavLink} from "react-router-dom";
 
-const Home = lazy(() => import("../components/Home"));
-const CoinPage = lazy(() => import("../components/CoinPage"));
-const FiatPage = lazy(() => import("../components/FiatPage"));
-const ExchangePage = lazy(() => import("../components/ExchangePage"));
+const Home = lazy(() => import("./components/Home"));
+const CoinPage = lazy(() => import("./components/CoinPage"));
+const FiatPage = lazy(() => import("./components/FiatPage"));
+const ExchangePage = lazy(() => import("./components/ExchangePage"));
 
 export default class Navigation extends Component {
   render() {

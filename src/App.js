@@ -2,8 +2,8 @@ import React, {Suspense} from "react";
 import "./App.css";
 import {BrowserRouter as Router} from "react-router-dom";
 import Navigation from "./Navigation";
-import Spinner from "./components/layout/Spinner";
-import Footer from "./components/layout/Footer";
+import Spinner from "./layout/Spinner";
+import Footer from "./layout/Footer";
 
 
 function App() {
