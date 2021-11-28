@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {fetchAssetApi} from './coinApi'
+import {fetchCoinApi} from './coinApi'
 import {LoadingState} from '../constants'
 
-export const fetchAsset = createAsyncThunk('coin/fetch-asset', async (id) => {
+export const fetchCoin = createAsyncThunk('coin/fetch-asset', async (id) => {
   try {
-    const response = await fetchAssetApi(id)
+    const response = await fetchCoinApi(id)
     return response
   } catch (error) {
     console.error(error.message);
@@ -19,14 +19,14 @@ const coinSlice = createSlice({
   },
   reducers: {},
   extraReducers: {
-    [fetchAsset.pending]: state => {
+    [fetchCoin.pending]: state => {
       state.status = LoadingState.loading
     },
-    [fetchAsset.fulfilled]: (state, action) => {
+    [fetchCoin.fulfilled]: (state, action) => {
       state.status = LoadingState.success
       state.coinInfo = action.payload.data
     },
-    [fetchAsset.rejected]: state => {
+    [fetchCoin.rejected]: state => {
       state.status = LoadingState.failed
     }
   }
