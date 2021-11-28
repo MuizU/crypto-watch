@@ -17,8 +17,8 @@ const Home = () => {
     }
   }, [status, dispatch])
 
-  if (this.state.exchangeDetails.length === 0 && !this.state.loaded) {
-    return <Spinner></Spinner>;
+  if (exchangeDetails.length === 0 && status !== LoadingState.success) {
+    return <Spinner />
   } else {
     return (
       <div className="container">

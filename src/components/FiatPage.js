@@ -15,7 +15,7 @@ const FiatPage = () => {
       dispatch(fetchRates())
     }
   })
-  if (fiatDetails.length === 0 && [LoadingState.success, LoadingState.idle].includes(status)) {
+  if (!fiatDetails || fiatDetails.length === 0 || [LoadingState.success, LoadingState.idle].includes(status)) {
     return (<Spinner />)
   } else {
     return (

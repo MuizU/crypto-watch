@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import React, {useState, useEffect} from "react";
 import Spinner from "../layout/Spinner";
 import {roundOff, checkNegative} from "../helpers";
@@ -8,7 +8,9 @@ import {fetchCoin, fetchCoinHistory} from './coinSlice'
 import {useSelector, useDispatch} from 'react-redux'
 import {LoadingState} from '../constants'
 
+
 export default function CoinPage() {
+  const history = useHistory()
   const dispatch = useDispatch()
   const coinInfo = useSelector(state => state.coin.coinInfo)
   const coinInfoStatus = useSelector(state => state.coin.status)
@@ -70,11 +72,16 @@ export default function CoinPage() {
       setChartData(chartConfig);
     }
   }, [id, coinHistoryStatus, coinHistoricalData, coinInfo, dispatch, coinInfoStatus]);
+
+  const goBack = () => {
+    history.goBack()
+  }
   if (!!coinInfo) {
     return (
       <div className="container">
         <div className="row justify-content-left">
           <div className="col-4">
+            <button onClick={() => goBack()}>back</button>
             <h1 className="display-3 text-secondary">#{coinInfo.rank}</h1>
           </div>
           <div className="col-4">

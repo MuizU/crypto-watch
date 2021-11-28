@@ -17,7 +17,7 @@ const Home = () => {
     }
   }, [dispatch, status])
 
-  if (coinDetails.length === 0 && [LoadingState.idle, LoadingState.loading].includes(status)) {
+  if (!coinDetails || coinDetails.length === 0 || [LoadingState.idle, LoadingState.loading].includes(status)) {
     return (<Spinner />)
   } else {
     return (
