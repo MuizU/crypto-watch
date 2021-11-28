@@ -1,14 +1,19 @@
 import {useParams} from "react-router-dom";
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import Spinner from "../layout/Spinner";
-import {roundOff, checkNegative, convertToDate} from "../helpers";
-import _ from "lodash";
+import {roundOff, checkNegative} from "../helpers";
 import moment from "moment";
 import {Line} from "react-chartjs-2";
+import {fetchCoin, fetchCoinHistory} from './coinSlice'
+import {useSelector, useDispatch} from 'react-redux'
+import {LoadingState} from '../constants'
 
 export default function CoinPage() {
-  const [coinInfo, setCoinInfo] = useState(null);
+  const dispatch = useDispatch()
+  const coinInfo = useSelector(state => state.coin.coinInfo)
+  const coinInfoStatus = useSelector(state => state.coin.status)
+  const coinHistoryStatus = useSelector(state => state.coin.coinHistoryStatus)
+  const coinHistoricalData = useSelector(state => state.coin.coinHistoricalData)
   const {id} = useParams();
   const [chartData, setChartData] = useState(null);
   const [chartOptions] = useState({
@@ -40,55 +45,35 @@ export default function CoinPage() {
     return moment(date).format("MMM YYYY");
   };
   useEffect(() => {
-    const fetchAssets = async () => {
-      try {
-        const resInfo = await axios.get(
-          `https://api.coincap.io/v2/assets/${id}`
-        );
-        const coinData = resInfo.data.data;
-        setCoinInfo(coinData);
-      } catch (e) {
-        console.log("ERR: ", e);
+    if (!!id) {
+      if (coinInfoStatus === LoadingState.idle) {
+        dispatch(fetchCoin(id))
       }
-    };
-    fetchAssets();
-  }, [id]);
-  useEffect(() => {
-    const fetchCoinHistory = async (props) => {
-      try {
-        const resHistory = await axios.get(
-          `https://api.coincap.io/v2/assets/${id}/history?interval=d1`
-        );
-        let coinHistoricalData = resHistory.data.data.map((hist) => ({
-          ...hist,
-          dateTime: convertToDate(hist.time, "dddd, MMMM Do YYYY, h:mm:ss a"),
-        }));
-        coinHistoricalData = _.uniqBy(coinHistoricalData, (e) => {
-          return e.date;
-        });
-        if (!coinInfo || !coinInfo.name) return;
-        const chartConfig = {
-          labels: coinHistoricalData.map((a) => formatDateChart(a.date)),
-          datasets: [
-            {
-              label: `${coinInfo["name"]} Valuation`,
-              data: coinHistoricalData.map((a) => a.priceUsd),
-              fill: true,
-              backgroundColor: "rgba(52, 152, 219, 0.75)",
-            },
-          ],
-        };
-        setChartData(chartConfig);
-      } catch (err) {
-        console.error(err);
+
+      if (coinHistoryStatus === LoadingState.idle) {
+        dispatch(fetchCoinHistory(id))
       }
-    };
-    fetchCoinHistory();
-  }, [id, coinInfo]);
+    }
+    if (coinHistoryStatus === LoadingState.success && coinInfoStatus === LoadingState.success) {
+
+      const chartConfig = {
+        labels: coinHistoricalData.slice().map((a) => formatDateChart(a.date)),
+        datasets: [
+          {
+            label: `${coinInfo["name"]} Valuation`,
+            data: coinHistoricalData.slice().map((a) => a.priceUsd),
+            fill: true,
+            backgroundColor: "rgba(52, 152, 219, 0.75)",
+          },
+        ],
+      };
+      setChartData(chartConfig);
+    }
+  }, [id, coinHistoryStatus, coinHistoricalData, coinInfo, dispatch, coinInfoStatus]);
   if (!!coinInfo) {
     return (
       <div className="container">
-        <div className="row justify-content-start">
+        <div className="row justify-content-left">
           <div className="col-4">
             <h1 className="display-3 text-secondary">#{coinInfo.rank}</h1>
           </div>
@@ -157,6 +142,6 @@ export default function CoinPage() {
       </div>
     );
   } else {
-    return <Spinner></Spinner>;
+    return <Spinner />
   }
 }

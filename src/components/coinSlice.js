@@ -1,13 +1,24 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {fetchCoinApi} from './coinApi'
+import {fetchCoinApi, fetchCoinHistoryApi} from './coinApi'
 import {LoadingState} from '../constants'
+import {convertToDate} from "../helpers";
+import _ from "lodash";
 
-export const fetchCoin = createAsyncThunk('coin/fetch-asset', async (id) => {
+export const fetchCoin = createAsyncThunk('coin/fetch-coin', async (payload) => {
   try {
-    const response = await fetchCoinApi(id)
+    const response = await fetchCoinApi(payload)
     return response
   } catch (error) {
     console.error(error.message);
+  }
+})
+
+export const fetchCoinHistory = createAsyncThunk('coin/fetch-history', async payload => {
+  try {
+    const response = await fetchCoinHistoryApi(payload)
+    return response
+  } catch (error) {
+    console.error(error.message)
   }
 })
 
@@ -15,7 +26,9 @@ const coinSlice = createSlice({
   name: 'coin',
   initialState: {
     coinInfo: {},
-    status: LoadingState.idle
+    status: LoadingState.idle,
+    coinHistory: [],
+    coinHistoryStatus: LoadingState.idle
   },
   reducers: {},
   extraReducers: {
@@ -24,10 +37,26 @@ const coinSlice = createSlice({
     },
     [fetchCoin.fulfilled]: (state, action) => {
       state.status = LoadingState.success
-      state.coinInfo = action.payload.data
+      state.coinInfo = action.payload?.data
     },
     [fetchCoin.rejected]: state => {
       state.status = LoadingState.failed
+    },
+    [fetchCoinHistory.pending]: state => {
+      state.coinHistoryStatus = LoadingState.loading
+    },
+    [fetchCoinHistory.fulfilled]: (state, action) => {
+      state.coinHistoryStatus = LoadingState.success
+      const chd = action.payload?.data.map((hist) => ({
+        ...hist,
+        dateTime: convertToDate(hist.time, "dddd, MMMM Do YYYY, h:mm:ss a"),
+      }));
+      state.coinHistoricalData = _.uniqBy(chd, (e) => {
+        return e.date;
+      });
+    },
+    [fetchCoinHistory.rejected]: state => {
+      state.coinHistoryStatus = LoadingState.failed
     }
   }
 })

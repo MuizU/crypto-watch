@@ -5,7 +5,7 @@ export async function fetchCoinApi(id) {
   return result
 }
 
-export async function fetchCoinHistory(id) {
+export async function fetchCoinHistoryApi(id) {
   const response = await fetch(`https://api.coincap.io/v2/assets/${id}/history?interval=d1`)
   const result = response.json()
   if (!response.ok) throw Error(response.error)
