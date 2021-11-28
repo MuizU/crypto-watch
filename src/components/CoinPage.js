@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Spinner from "./layout/Spinner";
+import Spinner from "../layout/Spinner";
 import { roundOff, checkNegative, convertToDate } from "./Helpers";
 import _ from "lodash";
 import moment from "moment";

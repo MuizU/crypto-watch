@@ -1,55 +1,46 @@
-import React, { Component } from "react";
+import React, {useEffect} from "react";
 import DisplayCard from "./DisplayCard";
-import axios from "axios";
-import Spinner from "./layout/Spinner";
-import { getCurrencyNameFromId, roundOff } from "./Helpers";
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
+import Spinner from "../layout/Spinner";
+import {roundOff} from "../helpers";
+import {useSelector, useDispatch} from "react-redux";
+import {LoadingState} from "../constants";
+import {fetchRates} from "./fiatSlice";
+const FiatPage = () => {
+  const dispatch = useDispatch()
+  const {fiat: {status}} = useSelector(state => state)
+  const {fiat: {fiatDetails}} = useSelector(state => state)
 
-    this.state = {
-      fiatDetails: [],
-    };
-  }
-  async componentDidMount() {
-    const res = await axios.get(`https://api.coincap.io/v2/rates`);
-    if (!!res.data) {
-      const fiatDetails = res.data.data
-        .filter((curr) => curr.type === "fiat")
-        .map((curr) => ({ ...curr, name: getCurrencyNameFromId(curr.id) }));
-      this.setState({ fiatDetails });
-    } else {
-      console.error(res);
+  useEffect(() => {
+    if (status === LoadingState.idle) {
+      dispatch(fetchRates())
     }
-  }
-  render() {
-    const { fiatDetails } = this.state;
-    if (this.state.fiatDetails.length === 0 && !this.state.loaded) {
-      return <Spinner></Spinner>;
-    } else {
-      return (
-        <div className="container">
-          <div className="row pt-4 mb-5">
-            {fiatDetails.map((detail, i) => (
-              //<FiatCard key={i} detail={detail}></FiatCard>
-              <DisplayCard
-                detail={detail}
-                key={i}
-                cardText={
-                  <span>
-                    Rate: &#36;{roundOff(detail.rateUsd)}
-                    <br />
-                    {!!detail.currencySymbol &&
-                      `
+  })
+  if (fiatDetails.length === 0 && [LoadingState.success, LoadingState.idle].includes(status)) {
+    return (<Spinner />)
+  } else {
+    return (
+      <div className="container">
+        <div className="row pt-4 mb-5">
+          {fiatDetails.map((detail, i) => (
+            <DisplayCard
+              detailName={detail.name}
+              detailSymbol={detail.symbol}
+              key={i}
+              cardText={
+                <span>
+                  Rate: &#36;{roundOff(detail.rateUsd)}
+                  <br />
+                  {!!detail.currencySymbol &&
+                    `
                 Currency Symbol: ${detail.currencySymbol}
                 `}
-                  </span>
-                }
-              />
-            ))}
-          </div>
+                </span>
+              }
+            />
+          ))}
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
+export default FiatPage
