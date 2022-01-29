@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
-import DisplayCard from "./DisplayCard";
-import Spinner from "../layout/Spinner";
-import {roundOff} from "../helpers";
+import DisplayCard from "components/DisplayCard";
+import Spinner from "layout/Spinner";
+import {roundOff} from "utils/helpers";
 import {useSelector, useDispatch} from "react-redux";
-import {LoadingState} from "../constants";
-import {fetchRates} from "./fiatSlice";
+import {LoadingState} from "utils/constants";
+import {fetchRates} from "views/FiatPage/fiatSlice";
 const FiatPage = () => {
   const dispatch = useDispatch()
   const {fiat: {status}} = useSelector(state => state)

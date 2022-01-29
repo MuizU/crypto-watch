@@ -1,7 +1,7 @@
-import {fetchRatesApi} from './fiatApi'
+import {fetchRatesApi} from 'views/FiatPage/fiatApi'
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {LoadingState} from '../constants'
-import {getCurrencyNameFromId} from "../helpers";
+import {LoadingState} from 'utils/constants'
+import {getCurrencyNameFromId} from "utils/helpers";
 
 export const fetchRates = createAsyncThunk('fiat/fetch-rates', async () => {
   try {
