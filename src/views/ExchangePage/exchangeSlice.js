@@ -1,6 +1,6 @@
-import {fetchExchangesApi} from './exchangeApi'
+import {fetchExchangesApi} from 'views/ExchangePage/exchangeApi'
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {LoadingState} from '../constants'
+import {LoadingState} from 'utils/constants'
 
 export const fetchExchanges = createAsyncThunk('exchanges/fetchExchanges', async () => {
   const response = await fetchExchangesApi()

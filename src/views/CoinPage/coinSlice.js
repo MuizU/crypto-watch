@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {fetchCoinApi, fetchCoinHistoryApi} from './coinApi'
-import {LoadingState} from '../constants'
-import {convertToDate} from "../helpers";
+import {fetchCoinApi, fetchCoinHistoryApi} from 'views/CoinPage/coinApi'
+import {LoadingState} from 'utils/constants'
+import {convertToDate} from "utils/helpers";
 import _ from "lodash";
 
 export const fetchCoin = createAsyncThunk('coin/fetch-coin', async (payload) => {

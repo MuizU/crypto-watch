@@ -1,12 +1,12 @@
 import {useParams, useHistory} from "react-router-dom";
 import React, {useState, useEffect} from "react";
-import Spinner from "../layout/Spinner";
-import {roundOff, checkNegative} from "../helpers";
+import Spinner from "layout/Spinner";
+import {roundOff, checkNegative} from "utils/helpers";
 import moment from "moment";
 import {Line} from "react-chartjs-2";
 import {fetchCoin, fetchCoinHistory} from './coinSlice'
 import {useSelector, useDispatch} from 'react-redux'
-import {LoadingState} from '../constants'
+import {LoadingState} from 'utils/constants'
 
 
 export default function CoinPage() {

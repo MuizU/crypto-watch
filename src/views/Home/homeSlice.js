@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {fetchAssetsApi} from './homeApi'
-import {LoadingState} from '../constants'
+import {fetchAssetsApi} from 'views/Home/homeApi'
+import {LoadingState} from 'utils/constants'
 
 export const fetchAsset = createAsyncThunk('home/fetch-assets', async () => {
   try {

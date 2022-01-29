@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
-import DisplayCard from "./DisplayCard";
-import Spinner from "../layout/Spinner";
-import {roundOff, numberWithCommas, removeTrailingZeros} from "../helpers.js";
-import {fetchExchanges} from './exchangeSlice'
+import Spinner from "layout/Spinner";
+import DisplayCard from "components/DisplayCard";
+import {roundOff, numberWithCommas, removeTrailingZeros} from "utils/helpers.js";
+import {fetchExchanges} from 'views/ExchangePage/exchangeSlice'
 import {useDispatch, useSelector} from 'react-redux'
-import {LoadingState} from '../constants'
+import {LoadingState} from 'utils/constants'
 
 const Home = () => {
   const exchangeDetails = useSelector(state => state.exchange.exchanges)

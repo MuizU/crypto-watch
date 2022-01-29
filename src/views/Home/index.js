@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
-import DisplayCard from "./DisplayCard";
-import Spinner from "../layout/Spinner";
-import {roundOff} from "../helpers";
+import DisplayCard from "components/DisplayCard";
+import Spinner from "layout/Spinner";
+import {roundOff} from "utils/helpers";
 import {Link} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
-import {fetchAsset} from "./homeSlice";
-import {LoadingState} from "../constants";
+import {fetchAsset} from "views/Home/homeSlice";
+import {LoadingState} from "utils/constants";
 
 const Home = () => {
   const dispatch = useDispatch()

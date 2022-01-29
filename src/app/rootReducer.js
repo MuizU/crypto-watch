@@ -1,8 +1,8 @@
 import {combineReducers} from '@reduxjs/toolkit'
-import coinSlice from '../components/coinSlice'
-import exchangeSlice from '../components/exchangeSlice'
-import fiatSlice from '../components/fiatSlice'
-import homeSlice from '../components/homeSlice'
+import coinSlice from 'views/CoinPage/coinSlice'
+import exchangeSlice from 'views/ExchangePage/exchangeSlice'
+import fiatSlice from 'views/FiatPage/fiatSlice'
+import homeSlice from 'views/Home/homeSlice'
 
 const rootReducer = combineReducers({
   exchange: exchangeSlice,
